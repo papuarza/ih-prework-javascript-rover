@@ -1,3 +1,6 @@
+
+/*Creación de Rovers y Obstaculos*/
+
 var myRover = {
   position: [0,0], 
   direction: 'N'
@@ -12,9 +15,11 @@ var obstacle1 = {
 var obstacle2 = {
   position: [7,7]
 };
-var moveRover = ["F", "F", "L", "F", "F"];
+/*--------------------------------------------*/
+
+var moveRover = ["F", "F", "L", "F", "F"]; /*Instrucciones de movimientos para los Rovers*/
 var avisoObstacle = false;
-var avisoRoverStill = false;
+var avisoRoverStill = false; /*Flag de aviso para que no se solapen los Rovers*/
 var myGrid = [
   ["-", "-", "-", "-", "-", "-", "-", "-", "-", "-"], 
   ["-", "-", "-", "-", "-", "-", "-", "-", "-", "-"],
@@ -27,10 +32,18 @@ var myGrid = [
   ["-", "-", "-", "-", "-", "-", "-", "-", "-", "-"],
   ["-", "-", "-", "-", "-", "-", "-", "-", "-", "-"]
 ];
+
+var lastPosition = {
+  position: [0,0],
+};
+
+/*Funciones de movimiento*/
 function goForward(rover, roverStill) {
+  lastPosition.position = rover.position;
   switch(rover.direction) {
     case 'N':
       rover.position[0]++
+
       if (rover.position[0] == obstacle1.position[0] && rover.position[1] == obstacle1.position[1]) {
         rover.position[0]--
         avisoObstacle = true;
@@ -139,7 +152,7 @@ function goBackward(rover, rover2) {
       break;
   };
 }
-function goRight(rover) {
+function goRight(rover) { /*Funcion solo utilizada para el Iteration1*/
   switch(rover.direction) {
     case 'N':
       rover.position[1]++
@@ -155,7 +168,7 @@ function goRight(rover) {
       break;
   };
 }
-function goLeft(rover) {
+function goLeft(rover) { /*Funcion solo utilizada para el Iteration1*/
   switch(rover.direction) {
     case 'N':
       rover.position[1]--
@@ -171,8 +184,11 @@ function goLeft(rover) {
       break;
   };
 }
+/*Impresion de la Informacion recibida*/
 console.log("Las instrucciones de movimiento fueron: " + moveRover);
 console.log("Posicion inicial Rover1: " + myRover.position + " || Direccion: " + myRover.direction + " ------ Posicion inicial Rover2: " + myRover2.position + " || Direccion: " + myRover2.direction);
+
+/*Funcion principal que ejecuta las instrucciones de movimiento*/
 function roversMoves(rover, roverStill, indication) {
   if (rover.position[0]>10) {
     rover.position[0] = 0;
@@ -234,12 +250,14 @@ function roversMoves(rover, roverStill, indication) {
   };
 }
 
+/*Llamado a función para cada una de las instrucciones del Array para el Rover*/
 var indications = 0;
 while (indications <= moveRover.length) {
   roversMoves(myRover, myRover2, indications);
   indications +=1;
 };
 
+/*Llamado a función para cada una de las instrucciones del Array para el Rover2*/
 var indications = 0;
 while (indications <= moveRover.length) {
   roversMoves(myRover2, myRover, indications);
@@ -252,8 +270,9 @@ myGrid[myRover2.position[0]][myRover2.position[1]] = "P";
 myGrid[obstacle1.position[0]][obstacle1.position[1]] = "X";
 myGrid[obstacle2.position[0]][obstacle2.position[1]] = "X";
 
-  
+/*Impresión del mapa*/
 function maper(mapa) {
   console.log(mapa.join('\n') + '\n\n');
 }
+
 maper(myGrid);
